@@ -25,7 +25,7 @@ public class IconScreen {
 
         // Set the initial position of the block to be in the center of the screen
         int x = (int) (screenSize.getWidth() - 300) / 2;
-        int y = (int) (screenSize.getHeight() * 0.9 - 150);w    a
+        int y = (int) (screenSize.getHeight() * 0.9 - 150);
         block.setBounds(x, y, 300, 150); // set bounds instead of location
 
         frame.addKeyListener(new KeyAdapter() {
