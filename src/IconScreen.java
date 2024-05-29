@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 
 public class IconScreen {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Icon Screen");
+        JFrame frame = new JFrame("Pong-2.0");
         String filePath = "src/block.png"; // replace with your absolute path
         ImageIcon Bl_icon = new ImageIcon(filePath);
 
