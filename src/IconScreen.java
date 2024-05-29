@@ -25,10 +25,21 @@ public class IconScreen {
         Bl_icon.setImage(Bl_icon.getImage().getScaledInstance(blockWidth, blockHeight, Image.SCALE_SMOOTH));
         block.setIcon(Bl_icon);
 
-        // Set the initial position of the block to be in the center of the screen
-        int x = (int) (screenSize.getWidth() - 300) / 2;
-        int y = (int) (screenSize.getHeight() * 0.9 - 150);
-        block.setBounds(x, y, 300, 150); // set bounds instead of location
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null); // set layout to null
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // set frame to fullscreen
+        frame.setVisible(true);
+
+        // Get the frame's size after it's been maximized
+        Dimension frameSize = frame.getSize();
+        Insets insets = frame.getInsets();
+
+        // Set the initial position of the block to be in the middle horizontally and 90% down
+        int x = (int) ((frameSize.getWidth() - blockWidth) / 2.0);
+        int y = (int) (frameSize.getHeight() * 0.9 - blockHeight);
+        block.setBounds(x, y, blockWidth, blockHeight); // set bounds instead of location
+
+        frame.getContentPane().add(block);
 
         frame.addKeyListener(new KeyAdapter() {
             int xTemp = x; // adjust the x position to fit the label
@@ -47,26 +58,20 @@ public class IconScreen {
                 // Check if the block is still within the visible area of the frame
                 if (xTemp < 0) {
                     xTemp = 0;
-                } else if (xTemp + 300 > frame.getWidth()) {
-                    xTemp = frame.getWidth() - 300;
+                } else if (xTemp + blockWidth > frame.getWidth() - insets.right) {
+                    xTemp = frame.getWidth() - insets.right - blockWidth;
                 }
 
-                if (yTemp < 0) {
-                    yTemp = 0;
-                } else if (yTemp + 150 > frame.getHeight()) {
-                    yTemp = frame.getHeight() - 150;
+                if (yTemp < insets.top) {
+                    yTemp = insets.top;
+                } else if (yTemp + blockHeight > frame.getHeight() - insets.bottom) {
+                    yTemp = frame.getHeight() - insets.bottom - blockHeight;
                 }
 
-                block.setBounds(xTemp, yTemp, 300, 150); // update bounds
+                block.setBounds(xTemp, yTemp, blockWidth, blockHeight); // update bounds
                 System.out.println("x: " + xTemp + ", y: " + yTemp);
             }
         });
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null); // set layout to null
-        frame.getContentPane().add(block);
-        frame.setSize(screenSize.width, screenSize.height); // set size of frame to be the same as the screen size
-        frame.setVisible(true);
 
         // Move the focus to the frame so that key events are received
         frame.requestFocus();
