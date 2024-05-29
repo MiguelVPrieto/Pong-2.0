@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,14 +15,15 @@ public class IconScreen {
             System.err.println("Error loading icon file.");
             return;
         }
+        JLabel block = new JLabel();
+        // Set the size of the icon
+        Bl_icon.setImage(Bl_icon.getImage().getScaledInstance(300, 150, Image.SCALE_SMOOTH));
+        block.setIcon(Bl_icon);
+        block.setBounds(830, 750, 300, 150); // set bounds instead of location
 
-        JLabel block = new JLabel(Bl_icon);
-        block.setBounds(910, 750, Bl_icon.getIconWidth(), Bl_icon.getIconHeight()); // set bounds instead of location
-
-        block.addKeyListener(new KeyAdapter() {
-            int x = 910;
+        frame.addKeyListener(new KeyAdapter() {
+            int x = 830; // adjust the x position to fit the label
             int y = 750;
-
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
@@ -32,7 +34,21 @@ public class IconScreen {
                         x += 10;
                         break;
                 }
-                block.setBounds(x, y, Bl_icon.getIconWidth(), Bl_icon.getIconHeight()); // update bounds
+
+                // Check if the block is still within the visible area of the frame
+                if (x < 0) {
+                    x = 0;
+                } else if (x + 800 > frame.getWidth()) {
+                    x = frame.getWidth() - 300;
+                }
+
+                if (y < 0) {
+                    y = 0;
+                } else if (y + 40 > frame.getHeight()) {
+                    y = frame.getHeight() - 150;
+                }
+
+                block.setBounds(x, y, 300, 150); // update bounds
                 System.out.println("x: " + x + ", y: " + y);
             }
         });
@@ -43,7 +59,7 @@ public class IconScreen {
         frame.setSize(1200, 900); // set size of frame to be larger than the block's position
         frame.setVisible(true);
 
-        // Move the focus to the label so that key events are received
-        block.requestFocus();
+        // Move the focus to the frame so that key events are received
+        frame.requestFocus();
     }
 }
