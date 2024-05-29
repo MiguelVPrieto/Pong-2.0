@@ -20,7 +20,9 @@ public class IconScreen {
         }
         JLabel block = new JLabel();
         // Set the size of the icon
-        Bl_icon.setImage(Bl_icon.getImage().getScaledInstance(300, 150, Image.SCALE_SMOOTH));
+        int blockWidth = (int) (screenSize.getWidth() * 0.17);
+        int blockHeight = (int) (screenSize.getHeight() * 0.1);
+        Bl_icon.setImage(Bl_icon.getImage().getScaledInstance(blockWidth, blockHeight, Image.SCALE_SMOOTH));
         block.setIcon(Bl_icon);
 
         // Set the initial position of the block to be in the center of the screen
