@@ -11,10 +11,6 @@ public class Ball extends JLabel {
     private Random random;
     private Timer timer;
     private JFrame frame;
-    private int xDirectionCount = 0;
-    private int yDirectionCount = 0;
-    private int lastXDirection = 0;
-    private int lastYDirection = 0;
 
     public Ball(JFrame frame, int frameWidth, int frameHeight) {
         this.frame = frame;
@@ -40,31 +36,25 @@ public class Ball extends JLabel {
     }
 
     private void moveBall() {
-        int x = getX() + xDirection * 5; // move 1 pixel at a time
-        int y = getY() + yDirection * 5; // move 1 pixel at a time
+        int x = getX() + xDirection * 5;
+        int y = getY() + yDirection * 5;
 
         // Check if the ball hits the screen border
-        if (x <= 0 || x + (int) (diameter * 1.25) >= getParent().getWidth()) {
-            xDirection *= -1;
-            xDirectionCount++;
-            if (xDirectionCount > 4 && xDirection == lastXDirection) {
-                xDirection = random.nextInt(2) * 2 - 1;
-                xDirectionCount = 1;
-            }
-            lastXDirection = xDirection;
+        if (x <= 0) {
+            xDirection = -xDirection;
+            x = 0;
+        } else if (x + diameter >= getParent().getWidth()) {
+            xDirection = -xDirection;
+            x = getParent().getWidth() - diameter;
         }
         if (y <= 0) {
-            yDirection *= -1;
-            yDirectionCount++;
-            if (yDirectionCount > 4 && yDirection == lastYDirection) {
-                yDirection = random.nextInt(2) * 2 - 1;
-                yDirectionCount = 1;
-            }
-            lastYDirection = yDirection;
-        } else if (y + (int) (diameter * 1.25) >= getParent().getHeight()) {
-            // Stop the timer and make the ball invisible when it hits the bottom of the screen
-            timer.stop();
-            setVisible(false);
+            yDirection = -yDirection;
+            y = 0;
+        } else if (y + diameter >= getParent().getHeight()) {
+            // Reset the ball to the center of the screen
+            setLocation(getParent().getWidth() / 2 - diameter / 2, getParent().getHeight() / 2 - diameter / 2);
+            xDirection = random.nextInt(2) * 2 - 1;
+            yDirection = -1;
         }
 
         // Check if the ball hits a block
@@ -73,15 +63,13 @@ public class Ball extends JLabel {
             JLabel block = (JLabel) component;
 
             // Change the direction of the ball upwards
-            yDirection = -1;
+            yDirection = -yDirection;
 
             // Generate a random horizontal direction
             xDirection = random.nextInt(2) * 2 - 1;
-
-            // Update the ball's position to be inside the block
-            setLocation(block.getX() - (int) (diameter * 1.25) / 2, block.getY() - (int) (diameter * 1.25));
         }
 
+        // Update the ball's position
         setLocation(x, y);
     }
 
