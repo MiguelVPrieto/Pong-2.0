@@ -41,6 +41,9 @@ public class IconScreen {
 
         frame.getContentPane().add(block);
 
+        Ball ball = new Ball(frame, frame.getWidth(), frame.getHeight());
+        frame.getContentPane().add(ball);
+
         frame.addKeyListener(new KeyAdapter() {
             int xTemp = x; // adjust the x position to fit the label
             int yTemp = y;
@@ -48,10 +51,10 @@ public class IconScreen {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_A:
-                        xTemp -= 10;
+                        xTemp -= 12;
                         break;
                     case KeyEvent.VK_D:
-                        xTemp += 10;
+                        xTemp += 12;
                         break;
                 }
 
